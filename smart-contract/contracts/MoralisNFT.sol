@@ -23,44 +23,14 @@ contract MoralisNFT is ERC721URIStorage, Ownable {
 
     function mintNFT(
         address recipient,
-        string memory tokenURI,
-        bool sellable,
-        uint256 price
+        string memory tokenURI
     ) public onlyOwner returns (uint256) {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
-        if (sellable) {
-            require(price != 0, "Price must be different than 0.");
-            tokensState[newItemId] = nftState(price, sellable, msg.sender);
-        }
 
         return newItemId;
-    }
-
-    function buyNFT(
-        address payable from,
-        uint256 tokenId,
-        uint256 amount
-    ) public payable {
-        require(tokensState[tokenId].sellable == true, "Token is not sellable");
-        from.transfer(amount);
-        approve(msg.sender, tokenId);
-        transferFrom(from, tokensState[tokenId].owner, tokenId);
-    }
-
-    function setNFTStatus(
-        uint256 price,
-        bool sellable,
-        uint256 tokenId
-    ) public {
-        require(
-            msg.sender != tokensState[tokenId].owner,
-            "NFT status can only be changed by the owner"
-        );
-        tokensState[tokenId].price = price;
-        tokensState[tokenId].sellable = sellable;
     }
 }

@@ -4,9 +4,10 @@ require("@nomiclabs/hardhat-ethers");
 const { API_URL, METAMASK_ACCOUNT_PRIVATE_KEY } = process.env;
 
 module.exports = {
-  defaultNetwork: "ropsten",
+  defaultNetwork: "hardhat",
   networks: {
     hardhat: {
+      timeout: 10000000,
       forking: {
         url: API_URL,
         blockNumber: 612845
@@ -14,7 +15,8 @@ module.exports = {
     },
     ropsten: {
       url: API_URL,
-      accounts: [`0x${METAMASK_ACCOUNT_PRIVATE_KEY}`]
+      accounts: [`0x${METAMASK_ACCOUNT_PRIVATE_KEY}`],
+      timeout: 10000000
     }
   },
   solidity: {

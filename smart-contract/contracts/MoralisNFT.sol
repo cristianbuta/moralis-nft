@@ -17,7 +17,7 @@ contract MoralisNFT is ERC721URIStorage, Ownable {
         address owner;
     }
 
-    mapping(uint256 => nftState) public tokensState;
+    mapping(uint256 => nftState) tokensState;
 
     constructor() ERC721("MoralisCoin", "MC") {}
 

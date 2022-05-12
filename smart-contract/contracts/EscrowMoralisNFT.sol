@@ -14,7 +14,7 @@ contract EscrowMoralisNFT {
 
     constructor() {}
 
-    function depositNFT(
+    function sellNFT(
         address nftContractAddress,
         uint256 tokenId,
         uint256 price

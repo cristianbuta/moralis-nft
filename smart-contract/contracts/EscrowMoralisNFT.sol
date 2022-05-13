@@ -10,7 +10,7 @@ contract EscrowMoralisNFT {
         uint256 price;
     }
 
-    mapping(uint256 => seller) escrowState;
+    mapping(uint256 => seller) public escrowState;
 
     constructor() {}
 
@@ -22,7 +22,7 @@ contract EscrowMoralisNFT {
         public
         onlyOwnerForContract(nftContractAddress, tokenId)
         onlyWithPrice(price)
-    {   
+    {
         IERC721(nftContractAddress).approve(address(this), tokenId);
         escrowState[tokenId] = seller(msg.sender, tokenId, price);
     }
@@ -37,14 +37,15 @@ contract EscrowMoralisNFT {
         address payable fromSeller = payable(escrowState[tokenId].seller);
         fromSeller.transfer(msg.value);
         IERC721(nftContractAddress).safeTransferFrom(
-            address(buyer),
             escrowState[tokenId].seller,
+            buyer,
             tokenId
         );
+        delete escrowState[tokenId];
     }
 
     function cancelSale(uint256 tokenId)
-        external
+        public
         onlyForSale(tokenId)
         onlyOwner(tokenId)
     {
@@ -61,7 +62,7 @@ contract EscrowMoralisNFT {
 
     modifier onlyOwnerForContract(address nftContractAddress, uint256 tokenId) {
         address tokenOwner = IERC721(nftContractAddress).ownerOf(tokenId);
-        require(tokenOwner != msg.sender, "Only nft owner can deposit");
+        require(tokenOwner == msg.sender, "Only nft owner can deposit");
         _;
     }
 

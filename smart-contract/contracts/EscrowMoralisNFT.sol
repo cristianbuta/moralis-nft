@@ -23,7 +23,6 @@ contract EscrowMoralisNFT {
         onlyOwnerForContract(nftContractAddress, tokenId)
         onlyWithPrice(price)
     {
-        IERC721(nftContractAddress).approve(address(this), tokenId);
         escrowState[tokenId] = seller(msg.sender, tokenId, price);
     }
 

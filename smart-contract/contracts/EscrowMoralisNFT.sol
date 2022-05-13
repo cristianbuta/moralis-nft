@@ -76,7 +76,7 @@ contract EscrowMoralisNFT {
     }
 
     modifier onlyForSale(uint256 tokenId) {
-        require(escrowState[tokenId].price > 0, "Only nfts that are for sale");
+        require(escrowState[tokenId].price > 0, "That token does not exist or it isn't available for selling");
         _;
     }
 }
